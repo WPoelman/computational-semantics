@@ -11,6 +11,9 @@ SEM_NONE = 'NIL'
 
 @dataclass
 class ConllTok:
+    ''' A ConllTok is a single token with all its annotation layers from the 
+        Parallel Meaning Bank.
+    '''
     tok: str
     sym: str
     sem: str
@@ -61,7 +64,7 @@ class ConllDoc:
         )
 
     def __str__(self) -> str:
-        ''' Nicely formatted '''
+        ''' Nicely formatted doc '''
         return '\n'.join((
             'ConllDoc(',
             f'  id: {self.id}',
@@ -100,7 +103,7 @@ class ConllDataset:
                 'rol': [],
             }
             # This is done in order to ensure we don't overwrite an id if a
-            # sentence / line contains this exact string for some reason
+            # sentence / line contains this exact string for some reason.
             found_id, found_sent = False, False
             for line in doc.split('\n'):
                 if line.startswith('#'):
