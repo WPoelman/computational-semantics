@@ -3,9 +3,25 @@ from dataclasses import dataclass
 from typing import List, Optional
 
 
+# Aliases for nil/none values in the dataset
+ROL_NONE = '[]'
+SNS_NONE = 'O'
+SEM_NONE = 'NIL'
+
+
+@dataclass
+class ConllTok:
+    tok: str
+    sym: str
+    sem: str
+    cat: str
+    sns: str
+    rol: str
+
+
 @dataclass
 class ConllDoc:
-    ''' A ConllDoc is a document / sentence, in this case with the annotation 
+    ''' A ConllDoc is a document / sentence, in this case with the annotation
         layers from the Parallel Meaning Bank. The annotations are per token
         and might not exist.
     '''
@@ -17,6 +33,47 @@ class ConllDoc:
     cat: List[str]
     sns: List[str]
     rol: List[str]
+
+    def get_by_token(self, token) -> Optional[ConllTok]:
+        ''' Get all annotations for a specific token by string.
+            Returns None if the token does not exist in the sentence.
+        '''
+        try:
+            return self.get_by_index(self.tok.index(token))
+        except ValueError:
+            return None
+
+    def get_by_index(self, idx: int) -> Optional[ConllTok]:
+        ''' Get all annotations for a specific token by index.
+            Returns None if the token does not exist in the sentence.
+        '''
+        if 0 < idx >= len(self.tok):
+            return None
+
+        # Misschien alles direct op token niveau doen?
+        return ConllTok(
+            tok=self.tok[idx],
+            sym=self.sym[idx],
+            sem=self.sem[idx],
+            cat=self.cat[idx],
+            sns=self.sns[idx],
+            rol=self.rol[idx],
+        )
+
+    def __str__(self) -> str:
+        ''' Nicely formatted '''
+        return '\n'.join((
+            'ConllDoc(',
+            f'  id: {self.id}',
+            f'  raw_sent: {self.raw_sent}',
+            f'  tok: {self.tok}',
+            f'  sym: {self.sym}',
+            f'  sem: {self.sem}',
+            f'  cat: {self.cat}',
+            f'  sns: {self.sns}',
+            f'  rol: {self.rol}',
+            ')',
+        ))
 
 
 class ConllDataset:
@@ -64,9 +121,9 @@ class ConllDataset:
                     tok, _, sym, sem, cat, sns, rol = items
                     # assert tok == tok1, "What is different here"
 
-                    # TODO misschien is het fijner werken als we alle
-                    # NIL, O, [] e.d. omzetten naar een python None. Nu moet
-                    # je maar net weten wat de nil-value is. Voor later.
+                    # None aliases are defined above. If we want, we can change
+                    # them here already, so `sem if sem != SEM_NONE else None`
+                    # for example. Need to see what is handy.
                     temp_doc['tok'].append(tok)
                     temp_doc['sym'].append(sym)
                     temp_doc['sem'].append(sem)
