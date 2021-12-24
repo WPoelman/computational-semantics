@@ -37,7 +37,7 @@ class ConllDoc:
     sns: List[str]
     rol: List[str]
 
-    def get_by_token(self, token) -> Optional[ConllTok]:
+    def get_by_token(self, token: str) -> Optional[ConllTok]:
         ''' Get all annotations for a specific token by string.
             Returns None if the token does not exist in the sentence.
         '''
