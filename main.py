@@ -1,6 +1,6 @@
 import sys
 
-from src.conll_loader import ConllDataset
+from src.conll import ConllDataset
 
 
 def main():
