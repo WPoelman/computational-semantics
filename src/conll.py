@@ -144,9 +144,6 @@ class ConllDataset:
             result.append(ConllDoc(**temp_doc))
         return result
 
-    def __len__(self) -> int:
-        return len(self.docs)
-
     def get_category(self, category: ANN_CATEGORY) -> List[List[str]]:
         ''' Returns all annotations of a certain category, this is sort of
             getting the docs by column:
@@ -167,3 +164,6 @@ class ConllDataset:
     def get_ids(self) -> List[Optional[str]]:
         ''' Returns all document ids in the dataset '''
         return [doc.id for doc in self.docs]
+
+    def __len__(self) -> int:
+        return len(self.docs)
