@@ -39,7 +39,12 @@ def baseline(sns):
             pos = syn.split(".")[1]
             senses = get_wn_sense(lem, pos)
             if senses:
-                predictions.append(senses[0].name())
+                # Check whether the lemma is in the list of all lemmas
+                if lem in senses[0].lemma_names():
+                    sense = lem + "." + pos + ".01"
+                    predictions.append(sense)
+                else:
+                    predictions.append(senses[0].name())
             else:
                 predictions.append(SNS_NONE)
 
