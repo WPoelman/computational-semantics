@@ -40,7 +40,12 @@ def baseline(sns):
             senses = get_wn_sense(lem, pos)
             if senses:
                 # Check whether the lemma is in the list of all lemmas
-                if lem in senses[0].lemma_names():
+                # todo: Wellicht als er een Wordnet resultaat is gewoon altijd ervoor
+                #  kiezen om gewoon lemma.pos.01 te voorspellen ipv deze moeilijke code,
+                #  maar ik weet niet wat het eerlijkst is tegenover ons eindsysteem
+                if lem in senses[0].lemma_names() \
+                        or lem.capitalize() in senses[0].lemma_names() \
+                        or lem.upper() in senses[0].lemma_names():
                     sense = lem + "." + pos + ".01"
                     predictions.append(sense)
                 else:
