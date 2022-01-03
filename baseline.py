@@ -11,9 +11,16 @@ Description:
 """
 
 import sys
+
 from nltk.corpus import wordnet as wn
-from src.conll import ConllDataset
-from sklearn.metrics import accuracy_score
+
+from src.conll import SNS_NONE, ConllDataset
+from src.utils import accuracy_score
+
+# Misschien wat overkill om heel sklearn te installeren hiervoor, als we nog
+# meer gaan gebruiken dan kunnen we dit wel toevoegen (sorry, punaise poetsen
+# I know I know)
+# from sklearn.metrics import accuracy_score
 
 
 def baseline(sns):
@@ -23,9 +30,9 @@ def baseline(sns):
     predictions = []
 
     for syn in sns:
-        if syn == "O":
+        if syn == SNS_NONE:
             # We can not predict the correct sense number for these words
-            predictions.append("O")
+            predictions.append(SNS_NONE)
         else:
             # Get the first sense from WordNet as our prediction
             lem = syn.split(".")[0]
@@ -34,7 +41,7 @@ def baseline(sns):
             if senses:
                 predictions.append(senses[0].name())
             else:
-                predictions.append("O")
+                predictions.append(SNS_NONE)
 
     return predictions
 
@@ -52,9 +59,9 @@ def evaluation(gold, predictions):
     score, but only for actual senses (not for the 'O' cases)"""
     all_senses, all_predictions = [], []
 
-    # First we only extract the actual senses, removing the "O" senses
+    # First we only extract the actual senses, removing the SNS_NONE senses
     for sense, pred in zip(gold, predictions):
-        if sense != "O":
+        if sense != SNS_NONE:
             all_senses.append(sense)
             all_predictions.append(pred)
 
@@ -65,7 +72,7 @@ def evaluation(gold, predictions):
 def main():
     # Load dataset, where argv[1] is the path to the right file
     dataset = ConllDataset(sys.argv[1])
-    
+
     print(f'\nLoaded {len(dataset)} documents\n')
     print(f'First doc: {dataset.docs[0]}\n')
 
@@ -78,9 +85,6 @@ def main():
 
         # Evaluation per document
         evaluation(doc.sns, predictions)
-
-
-
 
 
 if __name__ == '__main__':
