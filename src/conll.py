@@ -2,7 +2,6 @@ import logging
 from dataclasses import dataclass
 from typing import List, Literal, Optional
 
-
 # Aliases for nil/none values in the dataset
 ROL_NONE = '[]'
 SNS_NONE = 'O'
@@ -14,7 +13,7 @@ ANN_CATEGORY = Literal['tok', 'sym', 'sem', 'cat', 'sns', 'rol']
 
 @dataclass
 class ConllTok:
-    ''' A ConllTok is a single token with all its annotation layers from the 
+    ''' A ConllTok is a single token with all its annotation layers from the
         Parallel Meaning Bank.
     '''
     tok: str
@@ -83,7 +82,14 @@ class ConllDoc:
 
 
 class ConllDataset:
-    ''' A ConllDataset is a collection of Conll Docs.'''
+    ''' A ConllDataset is a collection of ConllDocs. The Docs are essentially
+        the rows and the annotation layers the columns, stored in lists.
+
+            tok, sym, sem, cat, sns, rol
+        doc1
+        doc2
+        ...
+    '''
 
     def __init__(self, file_path: str) -> None:
         self.docs: List[ConllDoc] = self.__parse_docs(file_path)
@@ -148,7 +154,7 @@ class ConllDataset:
         ''' Returns all annotations of a certain category, this is sort of
             getting the docs by column:
 
-                 |   
+                 |
                  V
                 tok, sym, sem, cat, sns, rol
             doc1
