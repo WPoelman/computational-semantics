@@ -18,6 +18,8 @@ We used a parsed subset of this data from here: <https://github.com/RikVN/DRS_pa
 
 ## TODO
 - [ ] todo aanvullen
+- [ ] Baseline description aanvullen & overbodige comments weghalen
+- [ ] Baseline todo overwegen: als er een WN result is, wellicht gewoon lemma & postag overnemen van gold en er handmatig 01 achter plakken. Of wel huidige code houden.
 
 ## Authors
 * Frank van den Berg
