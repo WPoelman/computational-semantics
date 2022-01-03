@@ -1,12 +1,15 @@
 import logging
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Literal, Optional, Union
 
 
 # Aliases for nil/none values in the dataset
 ROL_NONE = '[]'
 SNS_NONE = 'O'
 SEM_NONE = 'NIL'
+
+# Annotation category type (just for ease of use)
+ANN_CATEGORY = Literal['tok', 'sym', 'sem', 'cat', 'sns', 'rol']
 
 
 @dataclass
@@ -143,3 +146,24 @@ class ConllDataset:
 
     def __len__(self) -> int:
         return len(self.docs)
+
+    def get_category(self, category: ANN_CATEGORY) -> List[List[str]]:
+        ''' Returns all annotations of a certain category, this is sort of
+            getting the docs by column:
+
+                 |   
+                 V
+                tok, sym, sem, cat, sns, rol
+            doc1
+            doc2
+            ...
+        '''
+        return [getattr(doc, category) for doc in self.docs]
+
+    def get_sents(self) -> List[str]:
+        ''' Returns all raw sentences in the dataset '''
+        return [doc.raw_sent for doc in self.docs]
+
+    def get_ids(self) -> List[Optional[str]]:
+        ''' Returns all document ids in the dataset '''
+        return [doc.id for doc in self.docs]
