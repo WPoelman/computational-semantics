@@ -1,6 +1,6 @@
 import logging
 from dataclasses import dataclass
-from typing import List, Literal, Optional, Union
+from typing import List, Literal, Optional
 
 
 # Aliases for nil/none values in the dataset
