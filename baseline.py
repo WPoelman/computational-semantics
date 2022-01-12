@@ -82,9 +82,9 @@ def main():
     predictions = [baseline(doc.sns) for doc in dataset.docs]
 
     # Write results to pickle file
-    with open('results/baseline_predictions_' + args.dataset + '.conll', 'wb') as pred_file:
+    with open('results/baseline_predictions_' + args.dataset + '.pickle', 'wb') as pred_file:
         pickle.dump(predictions, pred_file)
-    print("Predictions have been written to file: 'results/baseline_predictions_" + args.dataset + ".conll")
+    print("Predictions have been written to file: 'results/baseline_predictions_" + args.dataset + ".pickle")
 
 
 if __name__ == '__main__':

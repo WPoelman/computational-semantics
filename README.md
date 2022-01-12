@@ -16,11 +16,11 @@ We used a parsed subset of this data from here: <https://github.com/RikVN/DRS_pa
 ## Usage
 First, generate system output by a previously defined model. As an example, the baseline can be used on the development set as follows:
 
-`python3 baseline.py data/dev.conll`
+`python3 baseline.py -d dev`
 
 Next, evaluate the system performance. As an example, evaluating the baseline predictions generated in the previous step on the development set can be done as follows:
 
-`python3 evaluate.py -e dev -p results/baseline_predictions.pickle`
+`python3 evaluate.py -e dev -p results/baseline_predictions_dev.pickle`
 
 
 ## TODO
