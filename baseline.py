@@ -10,19 +10,19 @@ Description:
     .
 """
 
-import sys
 import pickle
-
+import argparse
 from nltk.corpus import wordnet as wn
-
 from src.conll import SNS_NONE, ConllDataset
-from src.utils import accuracy_score
 
-# Misschien wat overkill om heel sklearn te installeren hiervoor, als we nog
-# meer gaan gebruiken dan kunnen we dit wel toevoegen (sorry, punaise poetsen
-# I know I know)
-# from sklearn.metrics import accuracy_score
 
+def create_arg_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--dataset", default='dev', type=str,
+                        help="Type of data set: train, dev, eval or test")
+
+    args = parser.parse_args()
+    return args
 
 def baseline(sns):
     """Uses the synsets for extracting the lemma and pos-tag, then
@@ -66,9 +66,15 @@ def get_wn_sense(lem, pos):
 
 
 def main():
-    # Load dataset, where argv[1] is the path to the right file
-    dataset = ConllDataset(sys.argv[1])
 
+    # Load data set
+    args = create_arg_parser()
+    if args.dataset in ["dev", "eval", "test", "train"]:
+        dataset = ConllDataset("data/" + args.dataset + ".conll")
+    else:
+        raise ValueError("The evaluation set must be specified as one of the following: 'dev', 'eval', 'test', 'train'")
+
+    # Print size and an example of the data
     print(f'\nLoaded {len(dataset)} documents\n')
     print(f'First doc: {dataset.docs[0]}\n')
 
@@ -76,9 +82,9 @@ def main():
     predictions = [baseline(doc.sns) for doc in dataset.docs]
 
     # Write results to pickle file
-    with open('results/baseline_predictions.pickle', 'wb') as pred_file:
+    with open('results/baseline_predictions_' + args.dataset + '.conll', 'wb') as pred_file:
         pickle.dump(predictions, pred_file)
-    print("Predictions have been written to file: 'results/baseline_predictions.pickle'")
+    print("Predictions have been written to file: 'results/baseline_predictions_" + args.dataset + ".conll")
 
 
 if __name__ == '__main__':

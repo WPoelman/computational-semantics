@@ -6,7 +6,7 @@ Date:       12-1-2022
 Authors:    Wessel Poelman, Esther Ploeger, Frank van den Berg
 Description:
     This script script outputs evaluation metrics for Word Sense Disambiguation (WSD) prediction.
-    It expects as input the .conll files of the gold standard and
+    It expects as input the .conll files of the gold standard and prints accuracy scores as output.
     .
 """
 
