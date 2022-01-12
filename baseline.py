@@ -11,6 +11,7 @@ Description:
 """
 
 import sys
+import pickle
 
 from nltk.corpus import wordnet as wn
 
@@ -64,21 +65,6 @@ def get_wn_sense(lem, pos):
     return senses
 
 
-def evaluation(gold, predictions):
-    """Uses the gold senses and predictions to calculate the accuracy
-    score, but only for actual senses (not for the 'O' cases)"""
-    all_senses, all_predictions = [], []
-
-    # First we only extract the actual senses, removing the SNS_NONE senses
-    for sense, pred in zip(gold, predictions):
-        if sense != SNS_NONE:
-            all_senses.append(sense)
-            all_predictions.append(pred)
-
-    # Print accuracy score for the remaining cases
-    print(f'Accuracy score: {accuracy_score(all_senses, all_predictions)} \n')
-
-
 def main():
     # Load dataset, where argv[1] is the path to the right file
     dataset = ConllDataset(sys.argv[1])
@@ -87,14 +73,12 @@ def main():
     print(f'First doc: {dataset.docs[0]}\n')
 
     # Predict senses for each document
-    for doc in dataset.docs:
-        predictions = baseline(doc.sns)
-        print(doc.id, doc.tok)
-        print(f"Golden synsets: {doc.sns}")
-        print(f"Predicted synsets: {predictions}")
+    predictions = [baseline(doc.sns) for doc in dataset.docs]
 
-        # Evaluation per document
-        evaluation(doc.sns, predictions)
+    # Write results to pickle file
+    with open('baseline_predictions.pickle', 'wb') as pred_file:
+        pickle.dump(predictions, pred_file)
+    print("Predictions have been written to file: 'baseline_predictions.pickle'")
 
 
 if __name__ == '__main__':
