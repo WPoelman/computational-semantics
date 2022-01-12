@@ -14,11 +14,18 @@ We used a parsed subset of this data from here: <https://github.com/RikVN/DRS_pa
 3. ...
 
 ## Usage
-`python ...`
+First, generate system output by a previously defined model. As an example, the baseline can be used on the development set as follows:
+
+`python3 baseline.py data/dev.conll`
+
+Next, evaluate the system performance. As an example, evaluating the baseline predictions generated in the previous step on the development set can be done as follows:
+
+`python3 evaluate.py -e dev -p results/baseline_predictions.pickle`
+
 
 ## TODO
 - [ ] Model trainen (eerste systeem trainen)
-- [ ] Evaluatie van dataset ipv per zin (macro / micro F1) (per woord)
+- [x] Evaluatie van dataset ipv per zin (macro / micro F1) (per woord)
 - [ ] Baseline description aanvullen & overbodige comments weghalen
 - [ ] Baseline todo overwegen: als er een WN result is, wellicht gewoon lemma & postag overnemen van gold en er handmatig 01 achter plakken. Of wel huidige code houden. (als we evaluatie van documenten hebben, dan even kijken of dit veel verschil geeft of dat het enkele uitzonderingen zijn)
 - [ ] Misschien kijken naar uncertainty van model ipv highest prob
