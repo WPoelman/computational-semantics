@@ -31,8 +31,6 @@ def create_arg_parser():
 def evaluate_synsets(gold, predictions, show_outputs=False):
     """Print accuracy on synset level, given predictions and the gold standard"""
 
-
-
     if show_outputs:
         # Display the synsets that are compared, with either 0 (correct) or 1 (wrong)
         for gold_sns, pred_sns in zip(gold, predictions):
@@ -44,9 +42,11 @@ def evaluate_synsets(gold, predictions, show_outputs=False):
 def evaluate_sentences(gold, predictions):
     """Print accuracy on sentence level, given predictions and the gold standard"""
     accuracies = []
+    g = []
 
     for gold_sent, pred_sent in zip(gold, predictions):
         gold_sent = remove_sns_none(gold_sent, mode="single")
+        g.append(gold_sent)
         pred_sent = remove_sns_none(pred_sent, mode="single")
         all_gold, all_predictions = [], []
         for sense, pred in zip(gold_sent, pred_sent):
@@ -58,7 +58,7 @@ def evaluate_sentences(gold, predictions):
             accuracies.append(accuracy_score(all_gold, all_predictions))
 
     print(f"Mean number of correct synsets (accuracy) per sentence: {sum(accuracies) / len(accuracies)}")
-    print(f"Fully correct sentences (accuracy): {accuracy_score(gold, predictions)}\n")
+    print(f"Fully correct sentences (accuracy): {accuracy_score(g, predictions)}\n")
 
 
 def remove_sns_none(full_sns, mode="multiple"):
