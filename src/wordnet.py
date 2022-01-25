@@ -21,18 +21,15 @@ def make_wn_context(
     ''' Combines available wordnet gloss context into a single string'''
     wn_context = ''
 
-    # Where is my walrus operator :P
-    definition = sense.definition()
-    if definition:
+    if definition := sense.definition():
         wn_context += definition + ' . '
 
-    examples = sense.examples()
-    if examples:
+    if examples := sense.examples():
         wn_context += ' . '.join(examples)
 
     # TODO: het was even zoeken wat een logische plek hiervoor was. We kunnen
     # elke keer dat we deze aanroepen kijken hoe we de context willen gebruiken
-    # dan weet je (hopelijk) zeker dat het tussen train / pred niet verkeerd 
+    # dan weet je (hopelijk) zeker dat het tussen train / pred niet verkeerd
     # gaat.
     if add_hypo:
         assert False, 'Add hypo is not implemented yet!'
