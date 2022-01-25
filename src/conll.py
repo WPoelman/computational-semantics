@@ -91,11 +91,11 @@ class ConllDataset:
         ...
     '''
 
-    def __init__(self, file_path: str) -> None:
+    def __init__(self, file_path: str, debug_log: bool = False) -> None:
+        self.debug_log = debug_log
         self.docs: List[ConllDoc] = self.__parse_docs(file_path)
 
-    @staticmethod
-    def __parse_docs(file_path: str) -> List[ConllDoc]:
+    def __parse_docs(self, file_path: str) -> List[ConllDoc]:
         with open(file_path) as f:
             docs = f.read().rstrip().split('\n\n')
 
@@ -143,7 +143,7 @@ class ConllDataset:
                     temp_doc['sns'].append(sns)
                     temp_doc['rol'].append(rol)
 
-            if not found_id:
+            if self.debug_log and not found_id:
                 logging.warning('No id for doc with sent: %s' %
                                 temp_doc['raw_sent'])
 
