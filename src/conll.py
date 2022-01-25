@@ -1,14 +1,22 @@
 import logging
 from dataclasses import dataclass
-from typing import List, Literal, Optional
+from enum import Enum
+from typing import List, Optional
 
 # Aliases for nil/none values in the dataset
 ROL_NONE = '[]'
 SNS_NONE = 'O'
 SEM_NONE = 'NIL'
 
-# Annotation category type (just for ease of use)
-ANN_CATEGORY = Literal['tok', 'sym', 'sem', 'cat', 'sns', 'rol']
+
+class AnnCategory(Enum):
+    ''' Annotation category type (just for ease of use) '''
+    TOK = 'tok'
+    SYM = 'sym'
+    SEM = 'sem'
+    CAT = 'cat'
+    SNS = 'sns'
+    ROL = 'rol'
 
 
 @dataclass
@@ -64,6 +72,10 @@ class ConllDoc:
             sns=self.sns[idx],
             rol=self.rol[idx],
         )
+
+    def get_category(self, category: AnnCategory) -> List[str]:
+        ''' Returns all annotations of a certain category'''
+        return getattr(self, category.value)
 
     def __str__(self) -> str:
         ''' Nicely formatted doc '''
@@ -129,28 +141,25 @@ class ConllDataset:
 
                     # tok:gold is in there two times for some reason?
                     # That is why it is ignored here.
-                    # Use the assertion to see it for yourself.
                     tok, _, sym, sem, cat, sns, rol = items
                     # assert tok == tok1, "What is different here"
 
-                    # None aliases are defined above. If we want, we can change
-                    # them here already, so `sem if sem != SEM_NONE else None`
-                    # for example. Need to see what is handy.
+                    # None aliases are defined above.
                     temp_doc['tok'].append(tok)
                     temp_doc['sym'].append(sym)
-                    temp_doc['sem'].append(sem)
+                    temp_doc['sem'].append(sem if sem != SEM_NONE else None)
                     temp_doc['cat'].append(cat)
-                    temp_doc['sns'].append(sns)
-                    temp_doc['rol'].append(rol)
+                    temp_doc['sns'].append(sns if sns != SNS_NONE else None)
+                    temp_doc['rol'].append(rol if rol != ROL_NONE else None)
 
-            if self.debug_log and not found_id:
+            if not found_id and self.debug_log:
                 logging.warning('No id for doc with sent: %s' %
                                 temp_doc['raw_sent'])
 
             result.append(ConllDoc(**temp_doc))
         return result
 
-    def get_category(self, category: ANN_CATEGORY) -> List[List[str]]:
+    def get_category(self, category: AnnCategory) -> List[List[str]]:
         ''' Returns all annotations of a certain category, this is sort of
             getting the docs by column:
 
@@ -161,7 +170,7 @@ class ConllDataset:
             doc2
             ...
         '''
-        return [getattr(doc, category) for doc in self.docs]
+        return [getattr(doc, category.value) for doc in self.docs]
 
     def get_sents(self) -> List[str]:
         ''' Returns all raw sentences in the dataset '''

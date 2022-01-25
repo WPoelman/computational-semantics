@@ -13,7 +13,7 @@ Description:
 
 import argparse
 import pickle
-from src.conll import SNS_NONE, ConllDataset
+from src.conll import AnnCategory, ConllDataset
 from src.utils import accuracy_score
 
 
@@ -50,7 +50,7 @@ def evaluate_sentences(gold, predictions):
         pred_sent = remove_sns_none(pred_sent, mode="single")
         all_gold, all_predictions = [], []
         for sense, pred in zip(gold_sent, pred_sent):
-            if sense != SNS_NONE:
+            if sense:
                 all_gold.append(sense)
                 all_predictions.append(pred)
 
@@ -67,11 +67,11 @@ def remove_sns_none(full_sns, mode="multiple"):
     if mode == "multiple":
         for sns_sent in full_sns:
             for sense in sns_sent:
-                if sense != SNS_NONE:
+                if sense:
                     filtered.append(sense)
     elif mode == "single":
         for sense in full_sns:
-            if sense != SNS_NONE:
+            if sense:
                 filtered.append(sense)
 
     return filtered
@@ -82,7 +82,7 @@ def main():
 
     # Get gold labels / evaluation dataset
     gold_data = ConllDataset(args.evaluation_file)
-    gold_labels_full = [doc.sns for doc in gold_data.docs if doc.sns != ""]
+    gold_labels_full = gold_data.get_category(AnnCategory.SNS)
 
     # Get predictions
     pred_file = args.prediction_file

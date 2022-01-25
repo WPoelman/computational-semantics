@@ -2,7 +2,7 @@
 
 """
 Filename:   baseline.py
-Date:       2-1-2022
+Date:       25-01-2022
 Authors:    Wessel Poelman, Esther Ploeger, Frank van den Berg
 Description:
     A baseline for the task of Word Sense Disambiguation that takes
@@ -10,19 +10,21 @@ Description:
     .
 """
 
-import pickle
 import argparse
-from nltk.corpus import wordnet as wn
-from src.conll import SNS_NONE, ConllDataset
+import pickle
+
+from src.conll import AnnCategory, ConllDataset
+from src.wordnet import get_wn_senses, make_sns_str
 
 
 def create_arg_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--dataset", default='dev', type=str,
-                        help="Type of data set: train, dev, eval or test")
-
+                        help="Type of data set: train, dev, eval or test",
+                        choices=["dev", "eval", "test", "train"])
     args = parser.parse_args()
     return args
+
 
 def baseline(sns):
     """Uses the synsets for extracting the lemma and pos-tag, then
@@ -31,60 +33,49 @@ def baseline(sns):
     predictions = []
 
     for syn in sns:
-        if syn == SNS_NONE:
-            # We can not predict the correct sense number for these words
-            predictions.append(SNS_NONE)
+        # This is done so we always end up with the same number of items per
+        # list (predictions and actual dataset).
+        if not syn:
+            predictions.append(None)
+            continue
+
+        # Get the first sense from WordNet as our prediction
+        lem, pos, _ = syn.split(".")
+        senses = get_wn_senses(lem, pos)
+        if not senses:
+            print(f'No Wordnet entry found for: {syn}')
+            predictions.append('NO WORDNET ENTRY FOUND')
+            continue
+
+        # Check whether the lemma is in the list of all lemmas
+        # todo: Wellicht als er een Wordnet resultaat is gewoon altijd ervoor
+        #  kiezen om gewoon lemma.pos.01 te voorspellen ipv deze moeilijke code,
+        #  maar ik weet niet wat het eerlijkst is tegenover ons eindsysteem
+        lemma_names = {l.lower() for l in senses[0].lemma_names()}
+        if lem.lower() in lemma_names:
+            predictions.append(make_sns_str(lem, pos, 1))
         else:
-            # Get the first sense from WordNet as our prediction
-            lem = syn.split(".")[0]
-            pos = syn.split(".")[1]
-            senses = get_wn_sense(lem, pos)
-            if senses:
-                # Check whether the lemma is in the list of all lemmas
-                # todo: Wellicht als er een Wordnet resultaat is gewoon altijd ervoor
-                #  kiezen om gewoon lemma.pos.01 te voorspellen ipv deze moeilijke code,
-                #  maar ik weet niet wat het eerlijkst is tegenover ons eindsysteem
-                if lem in senses[0].lemma_names() \
-                        or lem.capitalize() in senses[0].lemma_names() \
-                        or lem.upper() in senses[0].lemma_names():
-                    sense = lem + "." + pos + ".01"
-                    predictions.append(sense)
-                else:
-                    predictions.append(senses[0].name())
-            else:
-                predictions.append(SNS_NONE)
+            predictions.append(senses[0].name())
 
     return predictions
 
 
-def get_wn_sense(lem, pos):
-    """Uses the lemma and POS-tag to retrieve the WordNet senses"""
-    pos_dict = {"v": wn.VERB, "n": wn.NOUN, "a": wn.ADJ, "r": wn.ADV}
-    senses = wn.synsets(lem, pos=pos_dict[pos])
-
-    return senses
-
-
 def main():
-
     # Load data set
     args = create_arg_parser()
-    if args.dataset in ["dev", "eval", "test", "train"]:
-        dataset = ConllDataset("data/" + args.dataset + ".conll")
-    else:
-        raise ValueError("The evaluation set must be specified as one of the following: 'dev', 'eval', 'test', 'train'")
+    dataset = ConllDataset("data/" + args.dataset + ".conll")
 
-    # Print size and an example of the data
     print(f'\nLoaded {len(dataset)} documents\n')
-    print(f'First doc: {dataset.docs[0]}\n')
 
     # Predict senses for each document
-    predictions = [baseline(doc.sns) for doc in dataset.docs]
+    predictions = [baseline(sns)
+                   for sns in dataset.get_category(AnnCategory.SNS)]
 
     # Write results to pickle file
     with open('results/baseline_predictions_' + args.dataset + '.pickle', 'wb') as pred_file:
         pickle.dump(predictions, pred_file)
-    print("Predictions have been written to file: 'results/baseline_predictions_" + args.dataset + ".pickle")
+    print("Predictions have been written to file: 'results/baseline_predictions_" +
+          args.dataset + ".pickle")
 
 
 if __name__ == '__main__':

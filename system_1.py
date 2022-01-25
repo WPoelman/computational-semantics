@@ -13,7 +13,7 @@ Description:
 import argparse
 
 from src.conll import SNS_NONE, ConllDataset
-from baseline import get_wn_sense
+from src.wordnet import get_wn_senses
 
 from simpletransformers.classification import ClassificationModel, ClassificationArgs
 import pandas as pd
@@ -49,14 +49,14 @@ def prepare_train(conll_data):
         tok = doc.tok
         pmb_context = " ".join(tok)
         for syn in sns:
-            if syn == SNS_NONE:
+            if not syn:
                 # We can not predict the correct sense number for these words
                 pass
             else:
                 # Look up all possible synsets (senses) for this lemma and POS
                 lem = syn.split(".")[0]
                 pos = syn.split(".")[1]
-                senses = get_wn_sense(lem, pos)
+                senses = get_wn_senses(lem, pos)
 
                 for sense in senses:
                     sense_text = str(sense)[8:-2]
@@ -83,7 +83,7 @@ def predict_synset(tok, syn, model):
     # Look up all possible synsets (senses) for this lemma and POS
     lem = syn.split(".")[0]
     pos = syn.split(".")[1]
-    senses = get_wn_sense(lem, pos)
+    senses = get_wn_senses(lem, pos)
 
     for sense in senses:
         # Get definitions and example sentences from WordNet gloss
@@ -111,7 +111,7 @@ def predict(to_predict_file, model):
         sns = doc.sns
         tok = doc.tok
         for syn in sns:
-            if syn == SNS_NONE:
+            if not syn:
                 # We can not predict the correct sense number for these words
                 pass
             else:
