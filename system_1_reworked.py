@@ -117,7 +117,6 @@ def predict(
             _, raw_outputs = model.predict(context)
             prob_1 = [r[1] for r in raw_outputs]
             sense_num_most_probable = prob_1.index(max(prob_1)) + 1
-            sense_num_most_probable = 1
 
             sense_id = make_sns_str(lem, pos, sense_num_most_probable)
             doc_pred.append(sense_id)
