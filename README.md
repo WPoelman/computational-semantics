@@ -11,16 +11,15 @@ We used a parsed subset of this data from here: <https://github.com/RikVN/DRS_pa
 ## Installation
 1. (Optional) create and activate a virtual environment (tested with python 3.8)
 2. Install dependencies with `pip install -r requirements.txt`
-3. ...
 
 ## Usage
 First, generate system output by a previously defined model. As an example, the baseline can be used on the development set as follows:
 
-`python3 baseline.py -d dev`
+`python baseline.py -d dev`
 
 Next, evaluate the system performance. As an example, evaluating the baseline predictions generated in the previous step on the development set can be done as follows:
 
-`python3 evaluate.py -e data/dev.conll -p results/baseline_predictions_dev.pickle`
+`python evaluate.py -e data/dev.conll -p results/baseline_predictions_dev.pickle`
 
 
 ## TODO
@@ -32,9 +31,10 @@ Next, evaluate the system performance. As an example, evaluating the baseline pr
 - [ ] Report begin maken (baseline, onderzoeksvraag, taak etc.)
 - [ ] Literatuur checken
 - [ ] Als we model hebben, uitleggen hoe te gebruiken (README bijwerken)
-- [ ] Data variaties verzinnen (voorbeelden: met n aantal hypernymen en of hyponymen, met of zonder definitie, met pmb zinnen erbij of niet, zij-relaties)
-- [ ] Kijken of we nltk.download('wordnet') en nltk.download('omw-1.4') nog moeten automatiseren of niet
+- [x] Data variaties verzinnen (voorbeelden: met n aantal hypernymen en of hyponymen, met of zonder definitie, met pmb zinnen erbij of niet, zij-relaties)
+- [x] Kijken of we nltk.download('wordnet') en nltk.download('omw-1.4') nog moeten automatiseren of niet
 - [ ] De commands in de ReadMe checken (bijv of het klopt nu 'dev' naar 'data/dev.conll' is aangepast)
+- [ ] Command line args consitent maken tussen scrips (baseline heeft -d voor data file en evaluate -e bijvoorbeeld)
 
 ## Authors
 * Frank van den Berg
