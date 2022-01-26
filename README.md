@@ -20,7 +20,7 @@ First, generate system output by a previously defined model. As an example, the 
 
 Next, evaluate the system performance. As an example, evaluating the baseline predictions generated in the previous step on the development set can be done as follows:
 
-`python3 evaluate.py -e dev -p results/baseline_predictions_dev.pickle`
+`python3 evaluate.py -e data/dev.conll -p results/baseline_predictions_dev.pickle`
 
 
 ## TODO
@@ -33,6 +33,8 @@ Next, evaluate the system performance. As an example, evaluating the baseline pr
 - [ ] Literatuur checken
 - [ ] Als we model hebben, uitleggen hoe te gebruiken (README bijwerken)
 - [ ] Data variaties verzinnen (voorbeelden: met n aantal hypernymen en of hyponymen, met of zonder definitie, met pmb zinnen erbij of niet, zij-relaties)
+- [ ] Kijken of we nltk.download('wordnet') en nltk.download('omw-1.4') nog moeten automatiseren of niet
+- [ ] De commands in de ReadMe checken (bijv of het klopt nu 'dev' naar 'data/dev.conll' is aangepast)
 
 ## Authors
 * Frank van den Berg
