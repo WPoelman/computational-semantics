@@ -1,9 +1,10 @@
 from typing import List, Literal
 from nltk.corpus import wordnet as wn
 from nltk.corpus.reader.wordnet import Synset
+from nltk import download as nltk_download
 
-# nltk.download('omw-1.4')
-
+nltk_download('omw-1.4', quiet=True)
+nltk_download('wordnet', quiet=True)
 
 def make_sns_str(lem: str, pos: str, sense: int) -> str:
     ''' Formats a wordnet-style synset string'''
