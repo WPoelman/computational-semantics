@@ -33,6 +33,8 @@ Next, evaluate the system performance. As an example, evaluating the baseline pr
 - [ ] Literatuur checken
 - [ ] Als we model hebben, uitleggen hoe te gebruiken (README bijwerken)
 - [ ] Data variaties verzinnen (voorbeelden: met n aantal hypernymen en of hyponymen, met of zonder definitie, met pmb zinnen erbij of niet, zij-relaties)
+- [ ] Kijken of we nltk.download('wordnet') en nltk.download('omw-1.4') nog moeten automatiseren of niet
+- [ ] Wellicht de commands aanpassen in de Readme ('dev' naar 'data/dev.conll'
 
 ## Authors
 * Frank van den Berg
