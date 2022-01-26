@@ -14,31 +14,37 @@ def make_sns_str(lem: str, pos: str, sense: int) -> str:
         return f'{lem}.{pos}.0{sense}'
 
 
+def get_sns_context(synset: Synset) -> List[str]:
+    ''' Get the definition and example(s) from a synset'''
+    context = []
+    if definition := synset.definition():
+        context.append(definition)
+
+    if examples := synset.examples():
+        context.extend(examples)
+
+    return context
+
+
 def make_wn_context(
-    sense: Synset,
+    sns: Synset,
     add_hypo: bool = False,
     add_hyper: bool = False
 ) -> str:
     ''' Combines available wordnet gloss context into a single string'''
-    wn_context = ''
+    wn_context = get_sns_context(sns)
 
-    if definition := sense.definition():
-        wn_context += definition + ' . '
-
-    if examples := sense.examples():
-        wn_context += ' . '.join(examples)
-
-    # TODO: het was even zoeken wat een logische plek hiervoor was. We kunnen
-    # elke keer dat we deze aanroepen kijken hoe we de context willen gebruiken
-    # dan weet je (hopelijk) zeker dat het tussen train / pred niet verkeerd
-    # gaat.
     if add_hypo:
-        assert False, 'Add hypo is not implemented yet!'
+        if hyponyms := sns.hyponyms():
+            for hypo in hyponyms:
+                wn_context.extend(get_sns_context(hypo))
 
     if add_hyper:
-        assert False, 'Add hyper is not implemented yet!'
+        if hypernyms := sns.hypernyms():
+            for hyper in hypernyms:
+                wn_context.extend(get_sns_context(hyper))
 
-    return wn_context
+    return '' if not wn_context else '. '.join(wn_context) + '.'
 
 
 def get_wn_senses(lem: str, pos: Literal['v', 'n', 'a', 'r']) -> List[Synset]:
