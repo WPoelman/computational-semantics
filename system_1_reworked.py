@@ -31,9 +31,9 @@ def create_arg_parser():
                         help="Location of training file")
     parser.add_argument("-o", "--outfile", default='./data/output_s1.pickle', type=str,
                         help="Location of training file")
-    parser.add_argument('--add_hypo', action='store_true',
+    parser.add_argument('--add_hypo', action='store_true', default=False,
                         help='Adds hyponym gloss information to context.')
-    parser.add_argument('--add_hyper', action='store_true',
+    parser.add_argument('--add_hyper', action='store_true', default=False,
                         help='Adds hypernym gloss information to context.')
 
     args = parser.parse_args()
@@ -166,7 +166,10 @@ def main():
     model.train_model(train_df)
 
     # Predict synsets
-    predictions = predict(prediction_file, None)
+    predictions = predict(
+        prediction_file, model,
+        add_hypo=args.add_hypo, add_hyper=args.add_hyper
+    )
 
     # Write results to pickle file
     with open(args.outfile, 'wb') as pred_file:
