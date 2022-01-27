@@ -36,7 +36,7 @@ Correct synsets (accuracy): 0.856396866840731
 
  <br />
 
-*** MICRO: EVALUATION ON SENTENCE LEVEL ***
+*** MACRO: EVALUATION ON SENTENCE LEVEL ***
 
 Mean number of correct synsets (accuracy) per sentence: 0.8468175410318867
 
@@ -55,14 +55,51 @@ Fully correct sentences (accuracy): 0.6405451448040886
 
 ### SYSTEM 2: Trained on D and E of sentence tokens + D and E of hyponyms ###
 
+
+*** MICRO: EVALUATION ON SYNSET LEVEL ***
+
+Correct synsets (accuracy): 0.8648099796924862
+
+
+*** MACRO: EVALUATION ON SENTENCE LEVEL ***
+
+Mean number of correct synsets (accuracy) per sentence: 0.8566402095864084
+
+Fully correct sentences (accuracy): 0.6575809199318569
+
  <br /> 
 
 
 ### SYSTEM 3: Trained on D and E of sentence tokens + D and E of hypernyms ###
 
+********** EVALUATION **********
+
+*** MICRO: EVALUATION ON SYNSET LEVEL ***
+
+Correct synsets (accuracy): 0.8511749347258486
+
+*** MACRO: EVALUATION ON SENTENCE LEVEL ***
+
+Mean number of correct synsets (accuracy) per sentence: 0.8430606849266102
+
+Fully correct sentences (accuracy): 0.6252129471890971
+
+
  <br /> 
 
 
 ### SYSTEM 4: Trained on D and E of sentence tokens + D and E of hyponyms and hypernyms ###
+
+*** MICRO: EVALUATION ON SYNSET LEVEL ***
+
+Correct synsets (accuracy): 0.8616187989556136
+
+
+*** MACRO: EVALUATION ON SENTENCE LEVEL ***
+
+Mean number of correct synsets (accuracy) per sentence: 0.8535262962675424
+
+Fully correct sentences (accuracy): 0.6575809199318569
+
  <br /> 
 
