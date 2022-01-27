@@ -47,6 +47,17 @@ Fully correct sentences (accuracy): 0.6405451448040886
 
 ### SYSTEM 1a: Trained on D only of sentence tokens ###
 
+*** MICRO: EVALUATION ON SYNSET LEVEL ***
+
+Correct synsets (accuracy): 0.8436321438932405
+
+
+*** MICRO: EVALUATION ON SENTENCE LEVEL ***
+
+Mean number of correct synsets (accuracy) per sentence: 0.8353503006150307
+
+Fully correct sentences (accuracy): 0.610732538330494
+
  <br /> 
 
 ### SYSTEM 1b: Trained on E only of sentence tokens ###
