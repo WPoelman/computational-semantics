@@ -11,8 +11,6 @@ E = Example sentences, D = Definitions
 
 Correct synsets (accuracy): 0.5863069335654192
 
- <br /> 
-
 
 *** MICRO: EVALUATION ON SENTENCE LEVEL ***
 
@@ -24,7 +22,18 @@ Fully correct sentences (accuracy): 0.25979557069846676
  
 ### BASELINE 2: Statistical ###
 
-TBD
+
+*** MICRO: EVALUATION ON SYNSET LEVEL ***
+
+Correct synsets (accuracy): 0.8378299970989266
+
+
+*** MICRO: EVALUATION ON SENTENCE LEVEL ***
+
+Mean number of correct synsets (accuracy) per sentence: 0.8345881038024489
+
+Fully correct sentences (accuracy): 0.6039182282793867
+
  <br /> 
 
 
@@ -113,4 +122,7 @@ Mean number of correct synsets (accuracy) per sentence: 0.8535262962675424
 Fully correct sentences (accuracy): 0.6575809199318569
 
  <br /> 
+ 
+ ### SYSTEM 5: Trained on D and E of sentence tokens + D and E of words in same hierarchical place (hyponyms of hypernym) ###
 
+TBD
