@@ -6,8 +6,9 @@ Date:       25-01-2022
 Authors:    Wessel Poelman, Esther Ploeger, Frank van den Berg
 Description:
     A baseline for the task of Word Sense Disambiguation that takes
-    ...
-    .
+    tokens with their lemma and pos-tags and predicts the sense.
+    The predicted sense is always the first returned sense from
+    Wordnet, if any Wordnet entry can be found.
 """
 
 import argparse
@@ -48,9 +49,6 @@ def baseline(sns):
             continue
 
         # Check whether the lemma is in the list of all lemmas
-        # todo: Wellicht als er een Wordnet resultaat is gewoon altijd ervoor
-        #  kiezen om gewoon lemma.pos.01 te voorspellen ipv deze moeilijke code,
-        #  maar ik weet niet wat het eerlijkst is tegenover ons eindsysteem
         lemma_names = {l.lower() for l in senses[0].lemma_names()}
         if lem.lower() in lemma_names:
             predictions.append(make_sns_str(lem, pos, 1))
@@ -70,21 +68,6 @@ def main():
     # Predict senses for each document
     predictions = [baseline(sns)
                    for sns in dataset.get_category(AnnCategory.SNS)]
-    c = 0
-    for sns in dataset.get_category(AnnCategory.SNS):
-        print(sns)
-        print(len(sns))
-        for s in sns:
-            if s is not None:
-                print(s, 'yes')
-                c += 1
-
-    print("Synsets: ", c)
-    d = 0
-    for p in predictions:
-        d += len(p)
-    print("Tokens: ", d)
-    print(len(predictions))
 
     # Write results to pickle file
     with open('results/baseline_predictions_' + args.dataset + '.pickle', 'wb') as pred_file:
