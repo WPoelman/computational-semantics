@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 
 """
-Filename:   baseline.py
+Filename:   statistical_baseline.py
 Date:       25-01-2022
 Authors:    Wessel Poelman, Esther Ploeger, Frank van den Berg
 Description:
     A baseline for the task of Word Sense Disambiguation that takes
-    ...
-    .
+    tokens with their lemma and pos-tags and predicts the sense.
+    It uses the most frequent senses from the PMB gold layer train
+    data, and if the sense is not included in this, it predicts
+    the first sense from WordNet.
 """
 
 import argparse
