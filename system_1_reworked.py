@@ -20,31 +20,32 @@ from simpletransformers.classification import (ClassificationArgs,
                                                ClassificationModel)
 
 from src.conll import AnnCategory, ConllDataset
-from src.wordnet import get_wn_senses, make_sns_str, make_wn_context
+from src.wordnet import (ContextOptions, get_wn_senses, make_sns_str,
+                         make_wn_context)
 
 
 def create_arg_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-t", "--train_file", default='./data/train.conll', type=str,
-                        help="Location of training file")
-    parser.add_argument("-p", "--prediction_file", default='./data/dev.conll', type=str,
-                        help="Location of training file")
-    parser.add_argument("-o", "--outfile", default='./data/output_s1.pickle', type=str,
-                        help="Location of training file")
+    parser.add_argument("-t", "--train_file", default='./data/train.conll',
+                        type=str, help="Location of training file")
+    parser.add_argument("-p", "--prediction_file", default='./data/dev.conll',
+                        type=str, help="Location of training file")
+    parser.add_argument("-o", "--outfile", default='./data/output_s1.pickle',
+                        type=str, help="Location of training file")
     parser.add_argument('--add_hypo', action='store_true', default=False,
                         help='Adds hyponym gloss information to context.')
     parser.add_argument('--add_hyper', action='store_true', default=False,
                         help='Adds hypernym gloss information to context.')
-
-    args = parser.parse_args()
-    return args
+    parser.add_argument('--add_side', action='store_true', default=False,
+                        help='Adds side-relation (hypo of hyper) gloss '
+                             'information to context.')
+    return parser.parse_args()
 
 
 def prepare_sense_data(
     syn: Synset,
     pmb_context: str,
-    add_hypo: bool = False,
-    add_hyper: bool = False,
+    options: ContextOptions,
     with_labels: bool = False
 ) -> List[List[Any]]:
     """Prepare data to be in a useful format for text-pair classification"""
@@ -56,7 +57,7 @@ def prepare_sense_data(
 
     for sense in senses:
         # Get definitions and example sentences from WordNet gloss
-        wn_context = make_wn_context(sense, add_hypo, add_hyper)
+        wn_context = make_wn_context(sense, options)
 
         # For correct synsets, add label 1 and add 0 for incorrect ones
         if with_labels:
@@ -72,8 +73,7 @@ def prepare_sense_data(
 
 def prepare_train(
     conll_data: ConllDataset,
-    add_hypo: bool = False,
-    add_hyper: bool = False
+    options: ContextOptions
 ) -> List[List[Any]]:
     """Prepare training data to be in a useful format for text-pair classification"""
     data = []
@@ -86,7 +86,7 @@ def prepare_train(
             # We need a flat list here, not per document!
             data.extend(
                 prepare_sense_data(
-                    syn, pmb_context, add_hypo, add_hyper, with_labels=True
+                    syn, pmb_context, options, with_labels=True
                 )
             )
     return data
@@ -95,8 +95,7 @@ def prepare_train(
 def predict(
     to_predict_file: ConllDataset,
     model: ClassificationModel,
-    add_hypo: bool = False,
-    add_hyper: bool = False
+    options: ContextOptions
 ):
     """ Predict all synsets from a file """
     all_predictions = []
@@ -111,7 +110,7 @@ def predict(
                 continue
 
             lem, pos, _ = syn.split(".")
-            context = prepare_sense_data(syn, pmb_context, add_hypo, add_hyper)
+            context = prepare_sense_data(syn, pmb_context, options)
 
             # Predict correct synset
             _, raw_outputs = model.predict(context)
@@ -132,13 +131,14 @@ def main():
     #     exit(1)
 
     args = create_arg_parser()
+    options = ContextOptions(
+        add_hypo=args.add_hypo, add_hyper=args.add_hyper, add_side=args.add_side
+    )
 
     # Load input files
     train_file = ConllDataset(args.train_file)
     prediction_file = ConllDataset(args.prediction_file)
-    prepared_dataset = prepare_train(
-        train_file, add_hypo=args.add_hypo, add_hyper=args.add_hyper
-    )
+    prepared_dataset = prepare_train(train_file, options)
 
     # Prepare train set
     train_df = pd.DataFrame(prepared_dataset)
@@ -166,10 +166,7 @@ def main():
     model.train_model(train_df)
 
     # Predict synsets
-    predictions = predict(
-        prediction_file, model,
-        add_hypo=args.add_hypo, add_hyper=args.add_hyper
-    )
+    predictions = predict(prediction_file, model, options)
 
     # Write results to pickle file
     with open(args.outfile, 'wb') as pred_file:
