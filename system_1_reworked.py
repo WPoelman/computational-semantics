@@ -27,11 +27,11 @@ from src.wordnet import (ContextOptions, get_wn_senses, make_sns_str,
 def create_arg_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("-t", "--train_file", default='./data/train.conll',
-                        type=str, help="Location of training file")
+                        type=str, help="Location of training file.")
     parser.add_argument("-p", "--prediction_file", default='./data/dev.conll',
-                        type=str, help="Location of training file")
+                        type=str, help="Location of development file.")
     parser.add_argument("-o", "--outfile", default='./data/output_s1.pickle',
-                        type=str, help="Location of training file")
+                        type=str, help="Path to write output to.")
     parser.add_argument('--add_hypo', action='store_true', default=False,
                         help='Adds hyponym gloss information to context.')
     parser.add_argument('--add_hyper', action='store_true', default=False,
