@@ -70,6 +70,21 @@ def main():
     # Predict senses for each document
     predictions = [baseline(sns)
                    for sns in dataset.get_category(AnnCategory.SNS)]
+    c = 0
+    for sns in dataset.get_category(AnnCategory.SNS):
+        print(sns)
+        print(len(sns))
+        for s in sns:
+            if s is not None:
+                print(s, 'yes')
+                c += 1
+
+    print("Synsets: ", c)
+    d = 0
+    for p in predictions:
+        d += len(p)
+    print("Tokens: ", d)
+    print(len(predictions))
 
     # Write results to pickle file
     with open('results/baseline_predictions_' + args.dataset + '.pickle', 'wb') as pred_file:
