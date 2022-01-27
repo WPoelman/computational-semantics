@@ -22,19 +22,34 @@ Next, evaluate the system performance. As an example, evaluating the baseline pr
 `python evaluate.py -e data/dev.conll -p results/baseline_predictions_dev.pickle`
 
 
-## TODO
-- [ ] Model trainen (eerste systeem trainen)
+## TODO - done
+- [x] Model trainen (eerste systeem trainen)
 - [x] Evaluatie van dataset ipv per zin (macro / micro F1) (per woord)
-- [ ] Baseline description aanvullen & overbodige comments weghalen
-- [ ] Baseline todo overwegen: als er een WN result is, wellicht gewoon lemma & postag overnemen van gold en er handmatig 01 achter plakken. Of wel huidige code houden. (als we evaluatie van documenten hebben, dan even kijken of dit veel verschil geeft of dat het enkele uitzonderingen zijn)
-- [ ] Misschien kijken naar uncertainty van model ipv highest prob
-- [ ] Report begin maken (baseline, onderzoeksvraag, taak etc.)
-- [ ] Literatuur checken
-- [ ] Als we model hebben, uitleggen hoe te gebruiken (README bijwerken)
+- [x] Baseline description aanvullen & overbodige comments weghalen
+- [x] Baseline todo overwegen: als er een WN result is, wellicht gewoon lemma & postag overnemen van gold en er handmatig 01 achter plakken. Of wel huidige code houden. (als we evaluatie van documenten hebben, dan even kijken of dit veel verschil geeft of dat het enkele uitzonderingen zijn)
+- [x] Report begin maken (baseline, onderzoeksvraag, taak etc.)
+- [x] Literatuur checken
 - [x] Data variaties verzinnen (voorbeelden: met n aantal hypernymen en of hyponymen, met of zonder definitie, met pmb zinnen erbij of niet, zij-relaties)
 - [x] Kijken of we nltk.download('wordnet') en nltk.download('omw-1.4') nog moeten automatiseren of niet
+
+## TODO - programming / running experiments
+- [ ] Model trainen op context van 'zijrelaties' (hyponyms of hypernym)
+- [ ] Beste model (=hoogste scores op dev): trainen op meerdere epochs, evt. model anders tweaken
+- [ ] Misschien kijken naar uncertainty van model ipv highest prob
+- [ ] Testscores genereren (welke modellen precies? allemaal of alleen de beste?)
+- [x] Analysescript schrijven
+- [ ] Analysescript toepassen op gegenereerde test output van beste model
+- [ ] Beste model: pre-trained model uploaden / downloadbaar maken
+
+
+## TODO - administrative / cleaning up / writing
+- [ ] Als we het uiteindelijke model hebben, uitleggen hoe te gebruiken (README bijwerken)
 - [ ] De commands in de ReadMe checken (bijv of het klopt nu 'dev' naar 'data/dev.conll' is aangepast)
-- [ ] Command line args consitent maken tussen scrips (baseline heeft -d voor data file en evaluate -e bijvoorbeeld)
+- [ ] Command line args consitent maken tussen scripts (baseline heeft -d voor data file en evaluate -e bijvoorbeeld)
+- [ ] Methode herschrijven: voorbeelden data toevoegen & evaluatie meer in literatuur betrekken
+- [ ] Analyse maken m.b.v. script
+- [ ] Alles herschrijven voor stijl en cohesie
+
 
 ## Authors
 * Frank van den Berg
