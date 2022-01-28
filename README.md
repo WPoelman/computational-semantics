@@ -13,7 +13,7 @@ We used a parsed subset of this data from here: <https://github.com/RikVN/DRS_pa
 ## Installation
 1. (Optional) create and activate a virtual environment (tested with python 3.8)
 2. Install dependencies with `pip install -r requirements.txt`
-3. Download our best model from here **add link** if you want to use it
+3. Download our best model from [here](https://drive.google.com/drive/folders/17uEFmE4vIzgVidxFCFQbvmDRvDerPeTi?usp=sharing) if you want to use it
 
 ## Usage
 All our systems output a `.pickle` file with predictions that can be evaluated with the `evaluate.py` script.
@@ -46,12 +46,12 @@ All scripts provide a `--help` argument to see what arguments they accept.
 - [x] Kijken of we nltk.download('wordnet') en nltk.download('omw-1.4') nog moeten automatiseren of niet
 
 ## TODO - programming / running experiments
-- [ ] Model trainen op context van 'zijrelaties' (hyponyms of hypernym)
-- [ ] Beste model (=hoogste scores op dev): trainen op meerdere epochs, evt. model anders tweaken
-- [ ] Testscores genereren (welke modellen precies? allemaal of alleen de beste?)
+- [x] Model trainen op context van 'zijrelaties' (hyponyms of hypernym)
+- [x] Beste model (=hoogste scores op dev): trainen op meerdere epochs, evt. model anders tweaken
+- [x] Testscores genereren (welke modellen precies? allemaal of alleen de beste?)
 - [x] Analysescript schrijven
 - [ ] Analysescript toepassen op gegenereerde test output van beste model
-- [ ] Beste model: pre-trained model uploaden / downloadbaar maken (in readme installation zetten)
+- [x] Beste model: pre-trained model uploaden / downloadbaar maken (in readme installation zetten)
 
 
 ## TODO - administrative / cleaning up / writing
