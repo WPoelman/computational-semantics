@@ -24,6 +24,9 @@ The `system.py` script is used to train the sentence classification model with v
 As an example, the statistical baseline can be used on the development set as follows:
 
 `python always_first_baseline.py -d dev`
+```bash
+python always_first_baseline.py -d dev
+```
 
 Next, evaluate the system performance. As an example, evaluating the baseline predictions generated in the previous step on the development set can be done as follows:
 
