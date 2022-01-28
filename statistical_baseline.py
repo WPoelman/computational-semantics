@@ -104,7 +104,7 @@ def main():
     with open('results/statistical_baseline_predictions_' + args.dataset + '.pickle', 'wb') as pred_file:
         pickle.dump(predictions, pred_file)
     print("Predictions have been written to file: 'results/statistical_baseline_predictions_" +
-          args.dataset + ".pickle")
+          args.dataset + ".pickle'")
 
 
 if __name__ == '__main__':
