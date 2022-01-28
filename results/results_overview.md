@@ -81,6 +81,24 @@ E = Example sentences, D = Definitions
 
 ## Test results
 
+### BASELINE 1: Always predicting the first synset (test) ###
+
+
+|  Eval. type 	|   Score	|  
+|---	|---	|
+|  Acc. synsets 	|  58.9%	| 
+|  Acc. per sentence 	|  59.6% 	|   
+|   Fully correct sent.	|  23.2% 	|   
+
+### BASELINE 2: Statistical (test) ###
+
+
+|  Eval. type 	|   Score	|  
+|---	|---	|
+|  Acc. synsets 	|  84.5% 	| 
+|  Acc. per sentence 	|  84.7% 	|   
+|   Fully correct sent.	|  60.0% 	|  
+
  ### SYSTEM 5: Best model (=DE,words+hypo) (test) ###
 |  Eval. type 	|   Score	|  
 |---	|---	|
