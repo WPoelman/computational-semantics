@@ -99,7 +99,7 @@ E = Example sentences, D = Definitions
 |  Acc. per sentence 	|  84.7% 	|   
 |   Fully correct sent.	|  60.0% 	|  
 
- ### SYSTEM 5: Best model (=DE,words+hypo) (test) ###
+ ### SYSTEM 2: Best model (=DE,words+hypo) (test) ###
 |  Eval. type 	|   Score	|  
 |---	|---	|
 |  Acc. synsets 	|  86.9% 	| 
