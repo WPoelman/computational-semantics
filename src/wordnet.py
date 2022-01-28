@@ -15,6 +15,8 @@ class ContextOptions:
     add_hypo: bool = False
     add_hyper: bool = False
     add_side: bool = False
+    add_example: bool = False
+    add_definition: bool = False
 
 
 def make_sns_str(lem: str, pos: str, sense: int) -> str:
@@ -25,13 +27,13 @@ def make_sns_str(lem: str, pos: str, sense: int) -> str:
         return f'{lem}.{pos}.0{sense}'
 
 
-def get_sns_context(synset: Synset) -> List[str]:
+def get_sns_context(synset: Synset, options: ContextOptions) -> List[str]:
     ''' Get the definition and example(s) from a synset'''
     context = []
-    if definition := synset.definition():
+    if options.add_definition and (definition := synset.definition()):
         context.append(definition)
 
-    if examples := synset.examples():
+    if options.add_example and (examples := synset.examples()):
         context.extend(examples)
 
     return context
@@ -39,26 +41,23 @@ def get_sns_context(synset: Synset) -> List[str]:
 
 def make_wn_context(sns: Synset, options: ContextOptions) -> str:
     ''' Combines available wordnet gloss context into a single string'''
-    wn_context = get_sns_context(sns)
+    wn_context = get_sns_context(sns, options)
 
-    if options.add_hypo:
-        if hyponyms := sns.hyponyms():
-            for hypo in hyponyms:
-                wn_context.extend(get_sns_context(hypo))
+    if options.add_hypo and (hyponyms := sns.hyponyms()):
+        for hypo in hyponyms:
+            wn_context.extend(get_sns_context(hypo, options))
 
-    if options.add_hyper:
-        if hypernyms := sns.hypernyms():
-            for hyper in hypernyms:
-                wn_context.extend(get_sns_context(hyper))
+    if options.add_hyper and (hypernyms := sns.hypernyms()):
+        for hyper in hypernyms:
+            wn_context.extend(get_sns_context(hyper, options))
 
-    if options.add_side:
-        if hypernyms := sns.hypernyms():
-            for hyper in hypernyms:
-                for hypo in hyper.hyponyms():
-                    # Skip the starting sns since we have it already
-                    if sns._name == hypo._name:
-                        continue
-                    wn_context.extend(get_sns_context(hypo))
+    if options.add_side and (hypernyms := sns.hypernyms()):
+        for hyper in hypernyms:
+            for hypo in hyper.hyponyms():
+                # Skip the starting sns since we have it already
+                if sns._name == hypo._name:
+                    continue
+                wn_context.extend(get_sns_context(hypo, options))
 
     return '' if not wn_context else '. '.join(wn_context) + '.'
 

@@ -39,6 +39,12 @@ def create_arg_parser():
     parser.add_argument('--add_side', action='store_true', default=False,
                         help='Adds side-relation (hypo of hyper) gloss '
                              'information to context.')
+    parser.add_argument('--add_definition', action='store_true', default=False,
+                        help='Adds definition to context for all selected '
+                             'relations (if available).')
+    parser.add_argument('--add_example', action='store_true', default=False,
+                        help='Adds example(s) to context for all selected '
+                             'relations (if available).')
     return parser.parse_args()
 
 
@@ -132,7 +138,9 @@ def main():
 
     args = create_arg_parser()
     options = ContextOptions(
-        add_hypo=args.add_hypo, add_hyper=args.add_hyper, add_side=args.add_side
+        add_hypo=args.add_hypo, add_hyper=args.add_hyper,
+        add_side=args.add_side, add_example=args.add_example,
+        add_definition=args.add_definition
     )
 
     # Load input files
