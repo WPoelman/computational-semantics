@@ -132,9 +132,9 @@ def predict(
 
 
 def main():
-    # if not torch.cuda.is_available():
-    #     print('No gpu available!')
-    #     exit(1)
+    if not torch.cuda.is_available():
+        print('No gpu available!')
+        exit(1)
 
     args = create_arg_parser()
     options = ContextOptions(
