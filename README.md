@@ -13,7 +13,7 @@ We used a parsed subset of this data from here: <https://github.com/RikVN/DRS_pa
 ## Installation
 1. (Optional) create and activate a virtual environment (tested with python 3.8)
 2. Install dependencies with `pip install -r requirements.txt`
-3. Download our best model from [here](https://drive.google.com/drive/folders/17uEFmE4vIzgVidxFCFQbvmDRvDerPeTi?usp=sharing) if you want to use it
+3. Download our best model from [here](https://drive.google.com/drive/folders/17uEFmE4vIzgVidxFCFQbvmDRvDerPeTi?usp=sharing) if you want to use it (huggingface transformers style model)
 
 ## Usage
 All our systems output a `.pickle` file with predictions that can be evaluated with the `evaluate.py` script.
